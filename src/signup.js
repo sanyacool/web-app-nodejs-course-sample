@@ -30,17 +30,17 @@ class Signup  extends Component {
         // Send a post request
         Axios.post('/register',{name,password,email}).then((result)=>{
             // access results
-            console.log(result);
+            //console.log(result);
         }).then(
           (response) =>{
-            console.log(response);
+            //console.log(response);
             
             // redirect signed in user to dashboard
             this.props.refreshPageAndGoLogin();
             //document.location.reload(true);
           },
           (error)=>{
-            console.log(error, 'test');
+            console.log(error);
             document.location.reload(true);          
           }
         );

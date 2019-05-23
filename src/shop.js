@@ -13,7 +13,7 @@ class Shop extends React.Component {
 
   componentWillMount(){
     Axios.get('/products').then((response) => {
-      console.log(response.data);
+     // console.log(response.data);
       this.setState({
         products: response.data
       })
@@ -23,11 +23,11 @@ class Shop extends React.Component {
   handleClick(product) {
     alert('Congratulations! The "' + product + '" wallpaper was succesfully bought and sent to your email!');
     //const {product} = name;
-    console.log('product is: ', product);
+    //console.log('product is: ', product);
     let token = Auth.getToken();
    // console.log({token});
     Axios.post('/buy', {product, token/*, userid*/}).then((result)=>{
-      console.log(result);
+     // console.log(result);
     });
   }
 

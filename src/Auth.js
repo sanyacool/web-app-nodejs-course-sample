@@ -45,6 +45,7 @@ class Auth {
   static getUserId() {
     return localStorage.getItem('userid');
   }
+  
   static setUserId(id) {
     localStorage.setItem('userid', id);
   }

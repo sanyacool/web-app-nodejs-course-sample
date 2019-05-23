@@ -15,7 +15,7 @@ class Login extends React.Component {
   handleChangeName(event) {
       this.setState({name: event.target.value});
   }
-  
+
   handleChangePassword(event) {
       this.setState({password:event.target.value});
   }
@@ -27,15 +27,14 @@ class Login extends React.Component {
     const {name,password} = this.state;
     Axios.post('/login',{name,password}).then((response)=>{
             // access response
-            console.log('Result:',response);
+            //console.log('Result:',response);
             // save the token
             
             Auth.authenticateUser(response.data.token);
 
             //Auth.setUserId(response.data.userid)
-            
-            console.log(response)
-            console.log('token:',Auth.getToken());
+          
+            //console.log('token:',Auth.getToken());
             this.setState({name:'',password:''});
             //windows.location.reload();
 

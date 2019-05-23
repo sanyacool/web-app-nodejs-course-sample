@@ -16,9 +16,8 @@ class Homepage  extends Component {
     componentWillMount(){
         Axios.post('/test',{},{headers: {
             Authorization: "Bearer " + Auth.getToken()
-         }}).then((response) => {
-            console.log(response.data);
-
+        }}).then((response) => {
+            //console.log(response.data);
         });
     }
 
@@ -43,7 +42,7 @@ class Homepage  extends Component {
         // Add this token to blacklist 
         Axios.post('/logout',{}, {token:Auth.getToken()}).then((result)=>{
             // access results
-            console.log(result);
+            //console.log(result);
         })
 
         // Delete token from browser
@@ -68,13 +67,13 @@ class Homepage  extends Component {
                     <div id="logout"><button onClick={this.logout.bind(this)}>LogOut</button></div>
                     <Shop/>
                 </div>
-             ) : (
-               <div id="login">
-                 <div style={ shown }>
-                     <Login refreshPage={this.refreshPage} /><br/>
-                    <button onClick={this.toggle.bind(this)}>Register</button>
-                 </div>
-                 <div style={ hidden }>
+            ) : (
+                <div id="login">
+                    <div style={ shown }>
+                        <Login refreshPage={this.refreshPage} /><br/>
+                        <button onClick={this.toggle.bind(this)}>Register</button>
+                    </div>
+                <div style={ hidden }>
                     <Signup refreshPageAndGoLogin={this.refreshPageAndGoLogin} />
                 </div>
                   
