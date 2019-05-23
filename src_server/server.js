@@ -60,8 +60,8 @@ passport.use(strategy);
 // Useful functions database
 
 // Create some helper functions to work on the database
-const createUser = async ({ name, password }) => {
-    return await User.create({ name, password });
+const createUser = async ({ name, password, email }) => {
+    return await User.create({ name, password, email });
 };
 
 const createOrder = async ({ product, userid }) => {
@@ -103,6 +103,10 @@ const User = sequelize.define('user', {
         allowNull: false
     },
     password: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    email: {
         type: Sequelize.STRING,
         allowNull: false
     }
@@ -171,7 +175,7 @@ app.post('/login', async function(req, res, next) {
       // the only personalized value that goes into our token
       let payload = { id: user.id };
       let token = jwt.sign(payload, jwtOptions.secretOrKey);
-      var returnJson = { msg: 'ok', token: token, userid: payload.id }; 
+      var returnJson = { msg: 'ok', token: token/*, userid: payload.id*/ }; 
       console.log(returnJson);
       res.json(returnJson);
     } else {
@@ -181,17 +185,32 @@ app.post('/login', async function(req, res, next) {
 });
 
 app.post('/register', function(req, res) {
-	const { name, password } = req.body;
-	createUser({ name, password }).then(user =>
+	const { name, password, email } = req.body;
+  const saltRounds = 10;
+  bcrypt.hash(password,saltRounds,function(err,hash){
+    console.log('hashpassword:',hash)
+    var password = hash;
+    createUser({ name, password, email }).then(user =>
      	res.json({ name, msg: 'Account created successfully' })
-	);
-	console.log(req.body);
+    );
+  });
+	//console.log(req.body);
 	//res.json({});
 });
 
-app.post('/buy', function(req, res) {
-	const {product, userid} = req.body;
-	console.log('Item got: ', {product, userid})
+app.post('/buy', /*passport.authenticate('jwt'),*/ function(req, res) {
+	const {product, token/*, userid*/} = req.body;
+
+  let ntoken = {token};
+  console.log('token1:',ntoken.token);
+  
+  //Getting Id from Token
+  userid = jwt.verify(ntoken.token,jwtOptions.secretOrKey,function(err,decode){
+    console.log('UserID taked from payload of token:',decode.id);
+    return decode.id;
+  });
+
+	console.log('Item got: ', {product, userid});
 	createOrder({product, userid}).then(user =>
 		res.json({product, msg: 'Order created successfully'}),
 		console.log('Product ', {product}, ' for User №', {userid} ,'was succefully added in Order table')

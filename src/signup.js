@@ -5,7 +5,7 @@ import "./signup.css"
 class Signup  extends Component {
     constructor(props) {
         super(props);
-        this.state = {name: '', password:'', repeat_password:'', message:''};
+        this.state = {name: '', email: '', password:'', repeat_password:'', message:''};
     
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -17,7 +17,7 @@ class Signup  extends Component {
 
       handleSubmit(event) {
         event.preventDefault();
-        const {name,password, repeat_password} = this.state;
+        const {name,email,password,repeat_password} = this.state;
         if(password != repeat_password){
             this.setState({message : 'Password does not match with repeat password field!<br/>'});
         }
@@ -26,9 +26,9 @@ class Signup  extends Component {
             this.state.message += 'Email is not valid!<br/>';
         }
         */
+
         // Send a post request
-        
-        Axios.post('/register',{name,password}).then((result)=>{
+        Axios.post('/register',{name,password,email}).then((result)=>{
             // access results
             console.log(result);
         }).then(
@@ -41,33 +41,38 @@ class Signup  extends Component {
           },
           (error)=>{
             console.log(error, 'test');
-            document.location.reload(true);          }
+            document.location.reload(true);          
+          }
         );
         
       }
     
       render() {
         return (
-            <div id="signup">
+          <div id="signup">
             <form onSubmit={this.handleSubmit}>
-            
-            <label>
-              Name:
-              <input type="text" value={this.state.name} onChange={this.handleChange} name="name" required/>
-            </label><br/>
-            <label>
-            Password: 
-            <input type="password" value={this.state.password} onChange={this.handleChange} name="password" required/>
-            </label><br/>
-            <label>
-            Repeat-Password:
-            <input type="password" value={this.state.repeat_password} onChange={this.handleChange} name="repeat_password" required/>
-            </label><br/>
-            <input type="submit" value="Submit" />
-            
+          
+              <label>
+                Name:
+                <input type="text" value={this.state.name} onChange={this.handleChange} name="name" required/>
+              </label><br/>
+              <label>
+                Email:
+                <input type="text" value={this.state.email} onChange={this.handleChange} name="email" required/>
+              </label><br/>
+              <label>
+                Password: 
+                <input type="password" value={this.state.password} onChange={this.handleChange} name="password" required/>
+              </label><br/>
+              <label>
+                Repeat-Password:
+                <input type="password" value={this.state.repeat_password} onChange={this.handleChange} name="repeat_password" required/>
+              </label><br/>
+              <input type="submit" value="Submit" />
+  
             </form>
-            <div id="message">{this.state.message}</div>
-            </div>
+          <div id="message">{this.state.message}</div>
+          </div>
         );
       }
 }

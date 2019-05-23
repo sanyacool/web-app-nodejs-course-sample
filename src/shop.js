@@ -21,12 +21,12 @@ class Shop extends React.Component {
   }
 
   handleClick(product) {
-    alert(product);
+    alert('Congratulations! The "' + product + '" wallpaper was succesfully bought and sent to your email!');
     //const {product} = name;
     console.log('product is: ', product);
-    let userid = Auth.getUserId();
-    console.log({userid});
-    Axios.post('/buy', {product, userid}).then((result)=>{
+    let token = Auth.getToken();
+   // console.log({token});
+    Axios.post('/buy', {product, token/*, userid*/}).then((result)=>{
       console.log(result);
     });
   }

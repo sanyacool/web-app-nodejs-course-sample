@@ -31,7 +31,9 @@ class Login extends React.Component {
             // save the token
             
             Auth.authenticateUser(response.data.token);
-            Auth.setUserId(response.data.userid)
+
+            //Auth.setUserId(response.data.userid)
+            
             console.log(response)
             console.log('token:',Auth.getToken());
             this.setState({name:'',password:''});
