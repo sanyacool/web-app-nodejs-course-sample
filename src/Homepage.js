@@ -9,6 +9,17 @@ class Homepage  extends Component {
     constructor(props) {
         super(props);
         this.state = {show: false};
+        this.refreshPage = this.refreshPage.bind(this)
+        this.refreshPageAndGoLogin = this.refreshPageAndGoLogin.bind(this)
+    }
+
+    componentWillMount(){
+        Axios.post('/test',{},{headers: {
+            Authorization: "Bearer " + Auth.getToken()
+         }}).then((response) => {
+            console.log(response.data);
+
+        });
     }
 
     toggle() {
@@ -17,19 +28,28 @@ class Homepage  extends Component {
 		});
     }
 
+    refreshPage(){
+        this.forceUpdate();
+    } 
+
+    refreshPageAndGoLogin(){
+        this.toggle();
+        this.refreshPage();
+    }
+
     logout(){
-        alert('logout');
+        alert('You just loged out. Press Ok');
 
         // Add this token to blacklist 
-        Axios.post('/logout',{token:Auth.getToken()}).then((result)=>{
+        Axios.post('/logout',{}, {token:Auth.getToken()}).then((result)=>{
             // access results
             console.log(result);
         })
 
         // Delete token from browser
-        Auth.deauthenticateUser();
+        Auth.deauthenticateUser();  
 
-        
+        this.refreshPage();      
     }
     
     render() {
@@ -51,11 +71,11 @@ class Homepage  extends Component {
              ) : (
                <div id="login">
                  <div style={ shown }>
-                    <Login/><br/>
+                     <Login refreshPage={this.refreshPage} /><br/>
                     <button onClick={this.toggle.bind(this)}>Register</button>
                  </div>
                  <div style={ hidden }>
-                    <Signup/>
+                    <Signup refreshPageAndGoLogin={this.refreshPageAndGoLogin} />
                 </div>
                   
                </div>

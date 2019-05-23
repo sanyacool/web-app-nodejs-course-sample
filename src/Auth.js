@@ -43,7 +43,10 @@ class Auth {
    */
 
   static getUserId() {
-    return localStorage.getItem('userId');
+    return localStorage.getItem('userid');
+  }
+  static setUserId(id) {
+    localStorage.setItem('userid', id);
   }
 
 }
